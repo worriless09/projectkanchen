@@ -14,6 +14,10 @@ module.exports = {
         secondary: '#A8C4BF',
         ink: '#24342f',
       },
+      boxShadow: {
+        card: '0 10px 30px rgba(0,0,0,0.08)',
+        hover: '0 20px 45px rgba(122,154,149,.15)',
+      },
       keyframes: {
         rise: {
           '0%': { opacity: 0, transform: 'translateY(30px)' },
@@ -22,11 +26,7 @@ module.exports = {
       },
       animation: {
         rise: 'rise .6s ease-out forwards',
-      },
-      boxShadow: {
-        card: '0 10px 30px rgba(0,0,0,.08)',
-        hover: '0 20px 45px rgba(122,154,149,.15)',
-      },
+      }
     },
   },
   plugins: [],

@@ -1,6 +1,5 @@
 'use client'
 import { useEffect } from 'react'
-
 export default function ScrollReveal() {
   useEffect(() => {
     const io = new IntersectionObserver(
@@ -10,8 +9,8 @@ export default function ScrollReveal() {
           io.unobserve(e.target)
         }
       }),
-      { threshold: 0.15 }
-    )
+      { threshold: 0.18 }
+    );
     document.querySelectorAll<HTMLElement>('.scroll-reveal').forEach(el => io.observe(el))
     return () => io.disconnect()
   }, [])

@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* theme tokens */
+:root {
+  --bg: #ffffff;
+  --fg: #24342f;
+}
+.dark { --bg:#101513; --fg:#f5f7f6; }
+
+html,body{ @apply bg-[color:var(--bg)] text-[color:var(--fg)] antialiased; }
+
+.scroll-reveal{opacity:0;transform:translateY(30px);}
+.scroll-reveal.revealed{opacity:1;transform:translateY(0);animation:rise .6s ease-out;}
+
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{@apply bg-gray-100;}
+::-webkit-scrollbar-thumb{@apply bg-primary rounded-full;}
+
+.gradient-hero{
+  background:linear-gradient(135deg,
+    rgba(122,154,149,.05) 0%,
+    rgba(231,240,238,.8) 35%,
+    rgba(168,196,191,.05) 100%);
+}
