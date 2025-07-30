@@ -2,22 +2,26 @@
 
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createBrowserClient } from '@supabase/ssr'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 export default function SignInPage() {
-  const supabase = createClientComponentClient()
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+
   const router = useRouter()
 
   useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        router.push('/dashboard')
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === 'SIGNED_IN' && session) {
+          router.push('/dashboard')
+        }
       }
-    })
+    )
 
     return () => subscription.unsubscribe()
   }, [supabase, router])
@@ -81,7 +85,6 @@ export default function SignInPage() {
             <a 
               href="/auth/sign-up" 
               className="font-medium text-[#7A9A95] hover:text-[#7A9A95]/80 transition-colors"
-
             >
               Sign up here
             </a>

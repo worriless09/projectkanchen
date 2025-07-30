@@ -2,12 +2,17 @@
 
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createBrowserClient } from '@supabase/ssr'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 export default function SignUpPage() {
-  const supabase = createClientComponentClient()
+  // Create Supabase client for browser (Client Component)
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+
   const router = useRouter()
 
   useEffect(() => {
@@ -20,7 +25,8 @@ export default function SignUpPage() {
         const createdAt = new Date(session.user.created_at).getTime()
         const now = new Date().getTime()
 
-        const isNewUser = now - createdAt < 10 * 1000 // within 10 seconds
+        // Check if the user signed up less than 10s ago
+        const isNewUser = now - createdAt < 10 * 1000
 
         if (isNewUser) {
           router.push('/auth/confirm-email')
@@ -49,14 +55,20 @@ export default function SignUpPage() {
             variables: {
               default: {
                 colors: {
-                  brand: '#7A9A95',
-                  brandAccent: '#6B8B87',
+                  brand: '#7A9A95',        // Your Misty Mountains primary
+                  brandAccent: '#6B8B87',  // Darker shade for hover
                   inputBackground: 'white',
                   inputText: '#1f2937',
                   inputBorder: '#d1d5db',
                   inputBorderFocus: '#7A9A95',
                 },
               },
+            },
+            className: {
+              container: 'w-full',
+              button: 'w-full font-medium transition-colors',
+              input: 'w-full transition-colors',
+              label: 'text-sm font-medium text-gray-700',
             },
           }}
           providers={['google']}
