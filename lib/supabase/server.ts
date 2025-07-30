@@ -1,9 +1,12 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies as nextCookies, headers as nextHeaders } from 'next/headers'
+import { createServerClient } from '@supabase/ssr'
 
-export function createClient() {
-  return createServerComponentClient({
-    cookies: () => nextCookies(),
+/**
+ * Creates a Supabase client for server-side usage (API routes, server components).
+ */
+export function createClient(p0: string, p1: string) {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     
-  })
+  );
 }
