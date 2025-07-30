@@ -1,3 +1,6 @@
+// app/(dashboard)/page.tsx or any component using hooks
+"use client";
+
 import React from 'react'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
