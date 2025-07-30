@@ -1,5 +1,9 @@
-import { createServerComponentSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies as nextCookies, headers as nextHeaders } from 'next/headers'
 
-export function createClient(cookies: any) {
-  return createServerComponentSupabaseClient({ cookies });
+export function createClient() {
+  return createServerComponentClient({
+    cookies: () => nextCookies(),
+    
+  })
 }
