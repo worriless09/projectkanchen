@@ -1,0 +1,203 @@
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { notFound } from 'next/navigation'
+
+// Enable ISR with 5-minute revalidation for course details
+export const revalidate = 300
+export const dynamic = 'force-static'
+
+// Generate static params for popular courses
+export async function generateStaticParams() {
+  const supabase = createServerComponentClient({ cookies })
+  
+  const { data: courses } = await supabase
+    .from('courses')
+    .select('id')
+    .eq('is_active', true)
+    .limit(50) // Pre-generate top 50 courses
+
+  return courses?.map((course) => ({
+    id: course.id.toString()
+  })) || []
+}
+
+interface CoursePageProps {
+  params: Promise<{ id: string }>
+}
+
+export default async function CoursePage({ params }: CoursePageProps) {
+  const { id } = await params
+  const supabase = createServerComponentClient({ cookies })
+
+  // Fetch course with batches
+  const { data: course, error } = await supabase
+    .from('courses')
+    .select(`
+      *,
+      batches (
+        id,
+        start_date,
+        end_date,
+        timing,
+        mode,
+        seats,
+        fee_override
+      )
+    `)
+    .eq('id', parseInt(id))
+    .eq('is_active', true)
+    .single()
+
+  if (error || !course) {
+    notFound()
+  }
+
+  const availableBatches = course.batches
+    ?.filter(batch => new Date(batch.start_date) > new Date())
+    ?.sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime())
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      {/* Course Header */}
+      <div className="mb-8">
+        <div className="flex items-center gap-3 mb-4">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+            {course.category?.replace('_', ' ')}
+          </span>
+          <span className="text-sm text-gray-500 font-medium">
+            {course.level}
+          </span>
+        </div>
+        
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">
+          {course.title}
+        </h1>
+        
+        <p className="text-lg text-gray-600 mb-6">
+          {course.description || course.short_desc}
+        </p>
+      </div>
+
+      {/* Course Content */}
+      <div className="grid lg:grid-cols-3 gap-8">
+        {/* Main Content */}
+        <div className="lg:col-span-2">
+          <div className="bg-white rounded-lg border p-6 mb-6">
+            <h2 className="text-xl font-semibold mb-4">Course Overview</h2>
+            <div className="prose max-w-none">
+              <p>{course.description || "Comprehensive preparation program designed for competitive exam success."}</p>
+            </div>
+          </div>
+
+          {/* Available Batches */}
+          {availableBatches && availableBatches.length > 0 && (
+            <div className="bg-white rounded-lg border p-6">
+              <h2 className="text-xl font-semibold mb-4">Available Batches</h2>
+              <div className="space-y-4">
+                {availableBatches.map((batch) => (
+                  <BatchCard key={batch.id} batch={batch} courseId={course.id} />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Sidebar */}
+        <div className="lg:col-span-1">
+          <div className="bg-white rounded-lg border p-6 sticky top-4">
+            <div className="text-center mb-6">
+              <div className="text-3xl font-bold text-gray-900 mb-2">
+                ₹{course.fee?.toLocaleString()}
+              </div>
+              <p className="text-gray-600">Course Fee</p>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Duration</span>
+                <span className="font-medium">6 months</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Level</span>
+                <span className="font-medium">{course.level}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Format</span>
+                <span className="font-medium">Online + Offline</span>
+              </div>
+            </div>
+
+            <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+              Enroll Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Batch Card Component
+function BatchCard({ 
+  batch, 
+  courseId 
+}: { 
+  batch: {
+    id: number
+    start_date: string
+    end_date: string
+    timing: string
+    mode: string
+    seats: number
+    fee_override?: number
+  }
+  courseId: number 
+}) {
+  const displayFee = batch.fee_override
+  
+  return (
+    <div className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+      <div className="flex justify-between items-start mb-3">
+        <div>
+          <h3 className="font-medium text-gray-900">
+            Batch starting {new Date(batch.start_date).toLocaleDateString()}
+          </h3>
+          <p className="text-sm text-gray-600">
+            {batch.timing} • {batch.mode}
+          </p>
+        </div>
+        {displayFee && (
+          <div className="text-right">
+            <div className="font-bold text-lg">₹{displayFee.toLocaleString()}</div>
+          </div>
+        )}
+      </div>
+      
+      <div className="flex justify-between items-center">
+        <span className="text-sm text-gray-600">
+          {batch.seats} seats available
+        </span>
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">
+          Select Batch
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// Generate metadata for SEO
+export async function generateMetadata({ params }: CoursePageProps) {
+  const { id } = await params
+  const supabase = createServerComponentClient({ cookies })
+  
+  const { data: course } = await supabase
+    .from('courses')
+    .select('title, short_desc')
+    .eq('id', parseInt(id))
+    .single()
+
+  return {
+    title: course?.title || 'Course Details',
+    description: course?.short_desc || 'Learn more about this course at Kanchen Academy'
+  }
+}
