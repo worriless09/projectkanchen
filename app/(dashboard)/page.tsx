@@ -4,6 +4,7 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { FaBook, FaClipboardList, FaStar, FaClock } from 'react-icons/fa'
 import StatCard from '@/components/ui/StatCard'
+import DashboardClient from './DashboardClient'
 
 export default async function DashboardPage() {
   const supabase = createServerClient(

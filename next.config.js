@@ -9,7 +9,7 @@ const nextConfig = {
   
   // Optimize images
   images: {
-    domains: ['your-supabase-project.supabase.co'], // Add your Supabase storage domain
+    domains: ['infwbjeljxxzoqjklimq.supabase.co'], // Add your Supabase storage domain
     formats: ['image/webp', 'image/avif']
   },
 
