@@ -8,15 +8,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#7A9A95',
-        'primary-dark': '#48655F',
-        accent: '#E7F0EE',
-        secondary: '#A8C4BF',
-        ink: '#24342f',
+        primary: '#7A9A95',         // Main brand color
+        'primary-dark': '#48655F',  // Darker version for contrast
+        accent: '#E7F0EE',          // Light card/fill backgrounds
+        secondary: '#A8C4BF',       // Highlights or rings
+        ink: '#24342f',             // Main text color
       },
       boxShadow: {
-        card: '0 10px 30px rgba(0,0,0,0.08)',
-        hover: '0 20px 45px rgba(122,154,149,.15)',
+        card: '0 10px 30px rgba(0,0,0,0.08)',           // Soft elevation
+        hover: '0 20px 45px rgba(122,154,149,.15)',     // Stronger hover
       },
       keyframes: {
         rise: {
