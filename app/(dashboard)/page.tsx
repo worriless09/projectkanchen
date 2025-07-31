@@ -1,6 +1,4 @@
-// app/(dashboard)/page.tsx or any component using hooks
-"use client";
-
+// ✅ Server Component — no "use client"
 import React from 'react'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
@@ -9,16 +7,18 @@ import StatCard from '@/components/ui/StatCard'
 
 export default async function DashboardPage() {
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { cookies: cookies() }
-  )
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  {
+    cookies: cookies(), // 👈 required to avoid type errors
+  }
+);
 
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
-  const userId = user?.id
+  const userId = user?.id;
 
   if (!userId) {
     return <div className="p-6 text-red-600">Please log in to view your dashboard.</div>
