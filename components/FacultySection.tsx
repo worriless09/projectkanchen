@@ -1,68 +1,31 @@
+'use client'
+const faculty = [
+  { name: 'Dr. Sanjeev Sharma', subject: 'History', experience: '12 years', qualification: 'PhD Ancient History', achievement: 'Best Teacher 2019' },
+  { name: 'Ms. Anjali Verma', subject: 'Economics', experience: '8 years', qualification: 'M.A. Economics', achievement: 'Author, Top Mentor' },
+];
+
+import useScrollReveal from '@/hooks/useScrollReveal'
+
 export default function FacultySection() {
-  const faculty = [
-    {
-      id: 1,
-      name: 'Dr. Rajesh Kumar',
-      subject: 'History & Geography',
-      exp: '15 years',
-      bio: 'Former IAS officer with extensive UPSC-teaching experience.',
-      badges: ['500+ toppers', 'Author of 3 books'],
-    },
-    {
-      id: 2,
-      name: 'Prof. Anita Sharma',
-      subject: 'Maths & Reasoning',
-      exp: '12 years',
-      bio: 'Quantitative-aptitude mentor for SSC & banking exams.',
-      badges: ['1000+ selections', 'Teaching-Excellence Award'],
-    },
-    {
-      id: 3,
-      name: 'Dr. Vikram Singh',
-      subject: 'Polity & Current Affairs',
-      exp: '18 years',
-      bio: 'Political-science scholar and media commentator.',
-      badges: ['Author of 5 books', '300+ PCS officers'],
-    },
-  ];
-
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-ink mb-4">Meet Our Faculty</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Veteran educators and former civil-servants guiding your success.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <section className="py-20 bg-[#EAF0EF]">
+      <div className="container mx-auto max-w-6xl">
+        <h2 className="text-4xl font-bold mb-12 text-center text-[#2C3E3A]">Our Faculty</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {faculty.map((f) => (
-            <div
-              key={f.id}
-              className="text-center bg-white rounded-lg shadow-card hover:shadow-hover transition-all p-8"
-            >
-              <div className="w-28 h-28 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                <span className="text-3xl font-bold text-primary">
-                  {f.name
-                    .split(' ')
-                    .map((n) => n[0])
-                    .join('')}
-                </span>
+            <div key={f.name} className="bg-white rounded-lg shadow p-6 text-center hover:shadow-lg transition">
+              <div className="w-20 h-20 rounded-full bg-primary mb-4 flex items-center justify-center text-white text-2xl font-bold">
+                {f.name.charAt(0)}
               </div>
-
-              <h3 className="text-xl font-semibold text-ink">{f.name}</h3>
-              <p className="text-primary font-medium">{f.subject}</p>
-              <p className="text-sm text-gray-500 mb-4">{f.exp} experience</p>
-              <p className="text-sm text-gray-600 mb-4">{f.bio}</p>
-
-              {f.badges.map((b) => (
-                <p key={b} className="text-xs text-gray-500">• {b}</p>
-              ))}
+              <h3 className="text-xl font-semibold mb-1">{f.name}</h3>
+              <p className="text-gray-700 mb-1">{f.subject}</p>
+              <p className="text-gray-600 text-sm">{f.experience} experience</p>
+              <p className="text-gray-600 text-sm">{f.qualification}</p>
+              <p className="mt-2 text-gray-500 text-sm italic">"{f.achievement}"</p>
             </div>
           ))}
         </div>
       </div>
     </section>
-  );
+  )
 }

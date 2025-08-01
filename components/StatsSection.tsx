@@ -1,24 +1,23 @@
-export default function StatsSection() {
-  const stats = [
-    { number: '10,000+', label: 'Students Enrolled' },
-    { number: '95%', label: 'Success Rate' },
-    { number: '50+', label: 'Expert Faculty' },
-    { number: '1000+', label: 'Hours of Content' },
-  ]
+'use client'
+const stats = [
+  { label: 'Students', value: '1000+', icon: '🎓' },
+  { label: 'Courses', value: '14+', icon: '📚' },
+  { label: 'Faculty', value: '20+', icon: '👩‍🏫' },
+];
 
+import useScrollReveal from '@/hooks/useScrollReveal'
+
+export default function StatsSection() {
   return (
-    <section className="py-16 bg-primary text-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          {stats.map((stat, index) => (
-            <div key={index} className="space-y-2">
-              <div className="text-4xl md:text-5xl font-bold text-accent">
-                {stat.number}
-              </div>
-              <div className="text-lg opacity-90">{stat.label}</div>
-            </div>
-          ))}
-        </div>
+    <section className="py-16 bg-white">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        {stats.map((s) => (
+          <div key={s.label} className="bg-[#F8FAFA] p-6 shadow rounded-lg">
+            <div className="text-4xl mb-2">{s.icon}</div>
+            <div className="text-3xl font-bold text-primary">{s.value}</div>
+            <div className="mt-2 text-gray-600">{s.label}</div>
+          </div>
+        ))}
       </div>
     </section>
   )

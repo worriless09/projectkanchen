@@ -1,5 +1,8 @@
+'use client'
+
 import Link from 'next/link';
 import { ArrowRight, CheckCircle } from 'lucide-react';
+import useScrollReveal from '@/hooks/useScrollReveal'
 
 export default function CTASection() {
   const points = [

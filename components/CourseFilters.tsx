@@ -1,5 +1,6 @@
 'use client'
 
+import useScrollReveal from '@/hooks/useScrollReveal'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useTransition } from 'react'
 

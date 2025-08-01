@@ -5,18 +5,19 @@ module.exports = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  theme: {
-    extend: {
-      colors: {
-        primary: '#7A9A95',         // Main brand color
-        'primary-dark': '#48655F',  // Darker version for contrast
-        accent: '#E7F0EE',          // Light card/fill backgrounds
-        secondary: '#A8C4BF',       // Highlights or rings
-        ink: '#24342f',             // Main text color
-      },
-      boxShadow: {
-        card: '0 10px 30px rgba(0,0,0,0.08)',           // Soft elevation
-        hover: '0 20px 45px rgba(122,154,149,.15)',     // Stronger hover
+  // tailwind.config.js
+theme: {
+  extend: {
+    colors: {
+      primary: '#7A9A95', // Misty Mountains
+      primaryHover: '#6B8B86',
+      accent: '#4A6660',
+      background: '#F8FAFA',
+      textDark: '#2C3E3A',
+      textLight: '#6B7B77',
+      card: '#FFFFFF',
+      border: '#E5EEEC' ,
+      hover: '0 20px 45px rgba(122,154,149,.15)',     // Stronger hover
       },
       keyframes: {
         rise: {
